@@ -1,0 +1,174 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "whoami": {
+      "description": "Meta-orquestador autónomo multi-capa — cerebro que gerencia agentes vía loops inteligentes — detecta, planifica, mejora, despliega, monitorea, corrige y entrega",
+      "file": "D:/ARCHIVO/whoami/agents/whoami.md",
+      "mode": "subagent",
+      "hidden": true,
+      "color": "#FB923C",
+      "temperature": 0.2
+    },
+    "plan": {
+      "description": "Plan-only mode — generates plans but does NOT execute",
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/planner.txt}",
+      "mode": "primary",
+      "color": "#60A5FA",
+      "temperature": 0.2,
+      "tools": { "read": true, "bash": true, "write": false, "edit": false }
+    },
+    "build": {
+      "description": "Fast build mode — executes BUILD pipeline directly (T2-T3). Clasifica scope T2/T3, despliega agentes necesarios (architect, tdd-guide, code-reviewer, build-error-resolver, ramon), verifica gates (build+lint+tests), y entrega resultado. Si scope es T4, sugiere /plan primero. No planifiques — clasifica y ejecuta.",
+      "mode": "primary",
+      "color": "#34D399",
+      "temperature": 0.2,
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/build.txt}"
+    },
+    "architect": {
+      "description": "Senior software architect specializing in scalable, maintainable system design",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/architect.txt}",
+      "tools": { "read": true, "bash": true, "write": false, "edit": false }
+    },
+    "tdd-guide": {
+      "description": "Test-Driven Development specialist enforcing write-tests-first methodology with 80%+ coverage",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/tdd-guide.txt}",
+      "tools": { "read": true, "write": true, "edit": true, "bash": true }
+    },
+    "code-reviewer": {
+      "description": "Senior code reviewer ensuring high standards of code quality, security, and maintainability",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "#A78BFA",
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/code-reviewer.txt}",
+      "tools": { "read": true, "bash": true }
+    },
+    "build-error-resolver": {
+      "description": "Expert build error resolution specialist fixing TypeScript, compilation, and build errors with minimal changes",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/build-error-resolver.txt}",
+      "tools": { "read": true, "write": true, "edit": true, "bash": true }
+    },
+    "security-reviewer": {
+      "description": "Expert security specialist focused on identifying and remediating OWASP Top 10 vulnerabilities",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/security-reviewer.txt}",
+      "tools": { "read": true, "bash": true, "write": true, "edit": true }
+    },
+    "refactor-cleaner": {
+      "description": "Dead code cleanup, duplicate elimination, and consolidation specialist",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/refactor-cleaner.txt}",
+      "tools": { "read": true, "write": true, "edit": true, "bash": true }
+    },
+    "planner": {
+      "description": "Senior technical planner for decomposing complex features into actionable plans",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "color": "#3B82F6",
+      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/planner.txt}",
+      "tools": { "read": true, "bash": true, "write": false, "edit": false }
+    },
+    "ramon": {
+      "description": "Agente especializado en limpieza de código, detección de errores y corrección progresiva orientada a preservar funcionalidad",
+      "mode": "subagent",
+      "color": "#34D399",
+      "temperature": 0.2,
+      "file": "D:/ARCHIVO/whoami/agents/ramon.md"
+    },
+    "vega": {
+      "description": "Agente especializado en verificar, diagnosticar y corregir conexión Supabase en cualquier proyecto",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "file": "D:/ARCHIVO/whoami/agents/vega.md"
+    },
+    "e2e-runner": {
+      "description": "E2E browser testing with Playwright — verifica flujos críticos de usuario post-BUILD",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "file": "D:/ARCHIVO/whoami/agents/e2e-runner.md"
+    },
+    "doc-updater": {
+      "description": "Documentación automática — genera/actualiza README, CHANGELOG, API docs post-delivery",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "file": "D:/ARCHIVO/whoami/agents/doc-updater.md"
+    },
+    "reverse-explorer": {
+      "description": "Explora archivos, carpetas, estructura y metadatos sin asumir reglas — inventario y clasificación",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "file": "D:/ARCHIVO/whoami/agents/reverse-explorer.md"
+    },
+    "reverse-hypothesis": {
+      "description": "Infere reglas, transformaciones y lógica implícita desde evidencia observada",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "file": "D:/ARCHIVO/whoami/agents/reverse-hypothesis.md"
+    },
+    "reverse-validator": {
+      "description": "Valida hipótesis, busca contraejemplos y estima cobertura de reglas con muestreo estratégico",
+      "mode": "subagent",
+      "temperature": 0.0,
+      "file": "D:/ARCHIVO/whoami/agents/reverse-validator.md"
+    },
+    "reverse-spec-writer": {
+      "description": "Redacta el plano final del proceso observado y la propuesta de automatización",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "file": "D:/ARCHIVO/whoami/agents/reverse-spec-writer.md"
+    },
+    "whoami-planner": {
+      "description": "GOAP-like multi-path planner. Genera >=3 enfoques con precondiciones, riesgos, costos, y recomienda la ruta mas exacta. Ruflo-inspired.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "file": "D:/ARCHIVO/whoami/agents/whoami-planner.md",
+      "tools": { "read": true, "bash": true, "grep": true, "glob": true, "write": false, "edit": false, "task": false }
+    },
+    "whoami-loop": {
+      "description": "Ciclo de refinamiento iterativo. Recibe feedback, ajusta, re-ejecuta, repite hasta PASS o agota iteraciones (max 3). Ruflo autopilot-inspired.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "file": "D:/ARCHIVO/whoami/agents/whoami-loop.md",
+      "tools": { "read": true, "write": true, "edit": true, "bash": true, "grep": true, "glob": true, "task": true }
+    }
+  },
+  "command": {
+    "plan": {
+      "description": "Plan-only mode — planner generates >=3 enfoques pero NO ejecuta",
+      "template": "{file:D:/ARCHIVO/whoami/commands/plan.md}\n\n$ARGUMENTS",
+      "agent": "planner",
+      "subtask": true
+    },
+    "build": {
+      "description": "Fast build mode — WHOAMI executes BUILD pipeline directly (T2-T3)",
+      "template": "{file:D:/ARCHIVO/whoami/commands/build.md}\n\n$ARGUMENTS",
+      "agent": "build",
+      "subtask": true
+    },
+    "review": {
+      "description": "Audita el diff actual por sobre-ingeniería aplicando la Escalera de Optimalidad",
+      "template": "{file:D:/ARCHIVO/whoami/commands/review.md}\n\n$ARGUMENTS",
+      "agent": "code-reviewer",
+      "subtask": true
+    },
+    "audit-open": {
+      "description": "Audita el repositorio COMPLETO por sobre-ingeniería y código inflado",
+      "template": "{file:D:/ARCHIVO/whoami/commands/audit-open.md}\n\n$ARGUMENTS",
+      "agent": "ramon",
+      "subtask": true
+    },
+    "whoami": {
+      "description": "WHOAMI meta-orchestrator — despliega el pipeline multi-agente completo",
+      "template": "{file:D:/ARCHIVO/whoami/commands/whoami.md}\n\n$ARGUMENTS",
+      "agent": "whoami",
+      "subtask": true
+    }
+  }
+}
