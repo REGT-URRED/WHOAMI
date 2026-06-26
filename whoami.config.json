@@ -1,0 +1,53 @@
+{
+  "name": "WHOAMI",
+  "version": "2.0.0",
+  "backend": "ruflo",
+  "theme": "neon",
+  "colors": {
+    "primary": "#00FF88",
+    "secondary": "#FF00FF",
+    "accent": "#00FFFF",
+    "error": "#FF3333",
+    "success": "#00FF44",
+    "warning": "#FFAA00",
+    "info": "#00AAFF",
+    "muted": "#444444"
+  },
+  "agents": {
+    "enabled": ["architect", "tdd-guide", "code-reviewer", "build-error-resolver", "ramon", "code-reviewer", "e2e-runner", "doc-updater"],
+    "disabled": ["vega", "security-reviewer", "refactor-cleaner", "whoami-planner", "whoami-loop"]
+  },
+  "pipelines": {
+    "build": [
+      { "agent": "architect" },
+      { "agent": "tdd-guide" },
+      { "agent": "code-reviewer" },
+      { "agent": "build-error-resolver" },
+      { "agent": "ramon" },
+      { "agent": "e2e-runner" },
+      { "agent": "doc-updater" }
+    ],
+    "fix": [
+      { "agent": "build-error-resolver" },
+      { "agent": "tdd-guide" },
+      { "agent": "code-reviewer" }
+    ],
+    "refactor": [
+      { "agent": "refactor-cleaner" },
+      { "agent": "ramon" },
+      { "agent": "code-reviewer" }
+    ],
+    "reverse": [
+      { "agent": "reverse-explorer" },
+      { "agent": "reverse-hypothesis" },
+      { "agent": "reverse-validator" },
+      { "agent": "reverse-spec-writer" }
+    ]
+  },
+  "memory": {
+    "enabled": true,
+    "backend": "sqlite",
+    "path": "~/.whoami/memory.db"
+  },
+  "autoLearn": true
+}

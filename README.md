@@ -1,114 +1,182 @@
-# WHOAMI — Autonomous Multi-Agent Orchestrator
+# WHOAMI v2 — Modular Autonomous Agent CLI Framework
 
-> **Semilla**: Un meta-orquestador que no ejecuta codigo directamente.
-> Su unico proposito es clasificar, seleccionar y desplegar el agente
-> correcto para cada tarea. Como un cerebro que coordina especialistas.
+> **Seed idea**: A meta-orchestrator that doesn't execute code directly.
+> Its only purpose is to classify, select, and deploy the right agent for
+> each task. Like a brain that coordinates specialists.
+>
+> **v2.0**: Now a **modular framework**. Choose your backend, customize
+> colors, add/remove agents, define your own pipelines. Nothing is hardcoded.
 
 ---
 
-## Filosofia
+## Philosophy
 
-WHOAMI no es un agente mas. Es un **orquestador**. No edita archivos,
-no escribe codigo, no implementa features directamente. **Orquesta**.
+WHOAMI is not just another agent. It's an **orchestrator framework**. It
+doesn't edit files, write code, or implement features directly. It
+**orchestrates**.
 
-DELEGACION PRIMERO. Ante cualquier input, el unico pensamiento es:
-"Que agente es el correcto para esto?"
+**DELEGATION FIRST.** Before any input, the only thought is:
+"Which agent is right for this?"
 
-## Arquitectura
+---
 
-```
-Entrada (tarea)  -->  CLASIFICA  -->  SELECCIONA  -->  DESPLIEGA  -->  VERIFICA
-                       tipo+tier       agente(s)       pipeline        gates
-```
+## What Makes v2 Modular
 
-### Componentes
+| Feature | v1 | v2 |
+|---------|----|-----|
+| Backend | Ruflo only (hardcoded) | Pluggable (Ruflo, codebase-memory, gentle-ai) |
+| Colors | None | Theme system (neon, default, dark, custom) |
+| Agents | Fixed set of 17 | Configurable in `whoami.config.json` |
+| Pipelines | Hardcoded | User-defined in config |
+| Memory | None | SQLite auto-learn (tracks success rates) |
+| TUI | CLI only | Interactive mode (`--tui`) |
+| Config | None | `whoami.config.json` controls everything |
 
-| Componente | Cantidad | Descripcion |
-|-----------|----------|-------------|
-| Subagentes | 17 | architect, tdd-guide, code-reviewer, build-error-resolver, security-reviewer, refactor-cleaner, planner, ramon, vega, e2e-runner, doc-updater, reverse-explorer, reverse-hypothesis, reverse-validator, reverse-spec-writer, whoami-planner, whoami-loop |
-| Skills | 45 | Cargables on-demand via `skill("nombre")` |
-| Pipelines | 4 | BUILD, FIX, REFACTOR, REVERSE |
-| Backend | Ruflo | Orquestacion multi-agente con swarm |
+---
 
-### Pipelines
-
-```
-BUILD:    architect -> tdd-guide -> code-reviewer -> build-fixer -> ramon -> e2e -> docs
-FIX:      build-fixer -> tdd-guide -> code-reviewer
-REFACTOR: refactor-cleaner -> ramon -> code-reviewer
-REVERSE:  reverse-explorer -> reverse-hypothesis -> reverse-validator -> reverse-spec-writer
-```
-
-## CLI
+## Quick Start
 
 ```bash
-# Instalacion
+# Install globally
 npm install -g @whoami/cli
 
-# Comandos disponibles
-whoami build "implementar login con JWT"    # Pipeline BUILD completo
-whoami fix "error 500 en /api/users"        # Pipeline FIX
-whoami refactor "src/controllers/"          # Pipeline REFACTOR
-whoami reverse "src/legacy/"                # REVERSE engineering
-whoami review                               # Code review del diff actual
-whoami plan "migrar a PostgreSQL"           # Planificacion multi-path
-whoami audit                                # Auditoria del repositorio
-whoami security                             # Auditoria OWASP
-whoami supabase                             # Diagnostico Supabase
-whoami e2e                                  # Tests E2E Playwright
-whoami docs                                 # Documentacion automatica
-whoami orchestrate "tarea compleja"         # Meta-orquestador completo
+# Or use directly
+npx @whoami/cli build "implement login with JWT"
+
+# Interactive mode
+whoami tui
 ```
 
-## Estructura del Proyecto
+## Configuration
+
+Create `whoami.config.json` in your project or home directory:
+
+```json
+{
+  "name": "My Custom Agent",
+  "backend": "ruflo",
+  "theme": "neon",
+  "colors": {
+    "primary": "#00FF88",
+    "secondary": "#FF00FF",
+    "accent": "#00FFFF"
+  },
+  "agents": {
+    "enabled": ["architect", "tdd-guide", "code-reviewer"],
+    "disabled": ["vega"]
+  },
+  "pipelines": {
+    "my-build": [
+      { "agent": "architect" },
+      { "agent": "tdd-guide" },
+      { "agent": "code-reviewer" }
+    ]
+  },
+  "memory": {
+    "enabled": true,
+    "backend": "sqlite",
+    "path": "~/.whoami/memory.db"
+  },
+  "autoLearn": true
+}
+```
+
+## Commands
+
+```bash
+# Pipelines
+whoami build "implement login"     # Full BUILD pipeline
+whoami fix "error 500 in /api"     # Bug fix pipeline
+whoami refactor "src/controllers/" # Refactor pipeline
+whoami reverse "src/legacy/"       # REVERSE engineering
+
+# Single agents
+whoami review                      # Code review
+whoami plan "migrate DB"           # Multi-path planning
+whoami audit [path]                # Full repo audit
+
+# Meta
+whoami tui                         # Interactive mode
+whoami config                      # Show current config
+whoami backend                     # Show backend info
+whoami stats                       # Agent performance stats
+```
+
+## Backends
+
+| Backend | Status | Description |
+|---------|--------|-------------|
+| `ruflo` | ✅ Ready | Ruflo AI agent orchestration (default) |
+| `cbm` | ✅ Ready | Codebase-memory-mcp knowledge graph |
+| `gentle` | 🔄 Pending | Gentle-AI ecosystem configurator |
+
+Add your own backend by implementing the `AgentBackend` interface in
+`src/backends/` and registering it in `src/core/plugin-loader.ts`.
+
+## Themes
+
+| Theme | Style |
+|-------|-------|
+| `default` | Clean terminal default |
+| `neon` | Cyberpunk green + magenta + cyan |
+| `custom` | Define your own colors in `whoami.config.json` |
+
+## Memory & Auto-Learning
+
+When `memory.enabled: true`, WHOAMI tracks every agent run in SQLite:
+- Success rate per agent per command type
+- Average execution duration
+- Suggests best agent for each task based on history
+
+View stats: `whoami stats`
+
+## Architecture
 
 ```
-D:\ARCHIVO\whoami\
-├── README.md              # Este archivo
-├── package.json           # @whoami/cli
-├── tsconfig.json          # TypeScript config
-├── src/                   # CLI source
-│   ├── index.ts           # Entry point (Commander)
-│   └── ruflo-bridge.ts    # Bridge a Ruflo
-├── agents/ (17 archivos)  # Prompts de cada subagente
-├── prompts/_internal/     # Templates de subagentes
-├── skills/ (45 carpetas)  # Libreria de skills on-demand
-├── commands/              # Templates de comandos
-└── scripts/               # whoami-on/off
+whoami/
+├── whoami.config.json    ← Your configuration (controls everything)
+├── src/
+│   ├── index.ts          ← CLI entry point (Commander)
+│   ├── tui.ts            ← Interactive TUI (inquirer)
+│   ├── core/
+│   │   ├── backend.ts    ← AgentBackend interface
+│   │   ├── config.ts     ← Config loader (cosmiconfig)
+│   │   ├── plugin-loader.ts ← Backend registry
+│   │   ├── display.ts    ← Theme/color engine (chalk)
+│   │   └── memory.ts     ← SQLite auto-learn
+│   ├── backends/
+│   │   ├── ruflo.ts      ← Ruflo backend
+│   │   ├── cbm.ts        ← Codebase-memory backend
+│   │   └── gentle.ts     ← Gentle-AI backend
+│   └── themes/
+│       ├── default.ts
+│       ├── neon.ts
+│       └── index.ts
+├── agents/ (17 files)    ← Agent prompts (editable)
+├── skills/ (45 dirs)     ← On-demand skills
+└── README.md
 ```
 
-## Roadmap — Auto-aprendizaje
+## Roadmap
 
-- [x] Memoria cross-sesion (`whoami-state.md`)
-- [x] Workflows predefinidos (BUILD, FIX, REFACTOR, REVERSE)
-- [x] CLI standalone (`@whoami/cli`)
-- [x] Skills on-demand (45 skills)
-- [ ] Aprendizaje por refuerzo sobre resultados de agentes
-- [ ] Generacion automatica de nuevos subagentes segun necesidad
-- [ ] Optimizacion de pipelines basada en historico de exito/fallo
-- [ ] Memoria semantica vectorizada (HNSW)
-- [ ] Auto-healing: detecta fallos recurrentes y ajusta estrategia
-
-## Skills Criticos
-
-| Skill | Proposito |
-|-------|-----------|
-| `whoami-orchestration` | GOAP, Circuit Breaker, Token Budget, Handoff Guardian |
-| `reverse-methodology` | REVERSE engineering 5 pasos |
-| `whoami-frontend` | Reglas de diseno frontend |
-| `tdd-workflow` | TDD methodology |
-| `security-review` | Auditoria OWASP |
-| `optimality-ladder` | Escalera de optimalidad |
-| `strategic-compact` | Compactacion estrategica de contexto |
-| `silent-verify` | Verificacion silenciosa post-entrega |
-| `chess-engine` | Simulacion pre-ejecucion de impacto |
-
-## Requisitos
-
-- Node.js 18+
-- `npx ruflo@latest` disponible globalmente
-- Ruflo MCP configurado (para funcionamiento completo dentro de OpenCode/Kilo)
+- [x] Modular architecture (backends, themes, config)
+- [x] TUI interactive mode
+- [x] Memory + auto-learn (SQLite)
+- [x] Theme system (neon, default, custom)
+- [ ] Plugin marketplace (community backends)
+- [ ] Web dashboard
+- [ ] Codebase-memory-mcp full integration
+- [ ] Gentle-AI integration
+- [ ] Multi-agent swarm visualization
 
 ---
 
-**Proyecto mantenido por [REGT-URRED](https://github.com/REGT-URRED)**
+## Requirements
+
+- Node.js 18+
+- For `ruflo` backend: `npx ruflo@latest` available
+- For `cbm` backend: `codebase-memory-mcp` installed
+
+---
+
+**Project maintained by [REGT-URRED](https://github.com/REGT-URRED)**
