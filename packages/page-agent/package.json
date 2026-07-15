@@ -1,0 +1,1 @@
+{"name":"@whoami/page-agent","version":"2.1.0","description":"PageAgent — GUI Agent in-page (Alibaba PageAgent pattern)","main":"dist/index.js","types":"dist/index.d.ts","scripts":{"build":"tsc","clean":"rm -rf dist"},"dependencies":{"@whoami/core":"workspace:*"},"license":"MIT","author":"REGT-URRED"}

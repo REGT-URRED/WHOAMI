@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "simple-git": "^3.27.0",
+    "natural": "^8.0.1"
+  },
+  "author": "REGT-URRED",
+  "main": "dist/index.js",
+  "version": "2.1.0",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "description": "WHOAMI RAG Memory — project-local vector/RAG memory with incremental indexing and 3 embedding strategies",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "name": "@whoami/rag-memory"
+}

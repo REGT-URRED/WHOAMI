@@ -1,0 +1,9 @@
+{
+  "name": "@whoami/skills",
+  "version": "2.1.0",
+  "description": "WHOAMI Skills — 45+ domain skill modules",
+  "main": "index.js",
+  "scripts": { "build": "node -e \"console.log('skills: markdown-only, no build needed')\"" },
+  "license": "MIT",
+  "author": "REGT-URRED"
+}

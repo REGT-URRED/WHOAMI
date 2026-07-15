@@ -1,0 +1,1 @@
+{"name":"@whoami/agent-reach","version":"2.1.0","description":"Agent Reach — 14-platform web access (Twitter, Reddit, GitHub, YouTube, etc.)","main":"dist/index.js","types":"dist/index.js","scripts":{"build":"tsc","clean":"rm -rf dist"},"dependencies":{"@whoami/core":"workspace:*"},"license":"MIT","author":"REGT-URRED"}

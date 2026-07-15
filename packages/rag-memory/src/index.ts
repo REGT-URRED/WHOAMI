@@ -1,0 +1,13 @@
+export { InMemoryVectorDB } from './vector-db';
+export type { VectorDoc, SearchResult } from './vector-db';
+export { Collection } from './collection';
+export { ProjectMemory } from './project-memory';
+export type { MemoryStats, Decision, ErrorPattern } from './project-memory';
+export { autoInitMemory, detectComplexProject } from './auto-init';
+export type { DetectionResult } from './auto-init';
+export { Indexer } from './indexer';
+export type { IndexConfig, IndexedFile } from './indexer';
+export { Retriever } from './retriever';
+export type { ContextBundle } from './retriever';
+export { createEmbedder, BagOfWordsEmbedder, TfIdfEmbedder } from './embedder';
+export type { Embedder, EmbedderStrategy } from './embedder';

@@ -34,7 +34,7 @@ export function banner(): string {
     p(' ╚══╝╚══╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝'),
     '',
     s('                Autonomous Multi-Agent Orchestrator'),
-    a('                      v2.0 — Modular Framework'),
+    a('                 v2.3 — Full Ecosystem Integration'),
     '',
   ].join('\n');
 }

@@ -1,0 +1,1 @@
+{"version":"2.1.0","dependencies":{"yaml":"^2.7.1"},"peerDependencies":{},"author":"REGT-URRED","types":"dist/index.d.ts","name":"@whoami/design","scripts":{"dev":"tsc --watch","clean":"rm -rf dist","build":"tsc"},"main":"dist/index.js","description":"WHOAMI Design — DESIGN.md parser, token resolver, CSS/Tailwind generators","license":"MIT"}

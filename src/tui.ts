@@ -1,12 +1,12 @@
 import inquirer from 'inquirer';
 import { loadConfig } from './core/config';
 import { getBackend, listBackends } from './core/plugin-loader';
-import { banner, primary, secondary, accent, success, info, muted } from './core/display';
+import { banner, primary, secondary, accent, success, error, warning, info, muted } from './core/display';
 import { getAgentStats, suggestBestAgent } from './core/memory';
 
 export async function startTui(): Promise<void> {
   const config = await loadConfig();
-  const backend = getBackend(config.backend);
+  const backend = getBackend(config.backend, config);
 
   console.clear();
   console.log(banner());
@@ -37,6 +37,11 @@ export async function startTui(): Promise<void> {
         { name: `${info('👀')} Review — Code review`, value: 'review' },
         { name: `${info('📋')} Plan — Multi-path planning`, value: 'plan' },
         { name: `${info('🩺')} Audit — Full repository audit`, value: 'audit' },
+        { name: `${info('👐')} Hands — List OpenFang Hands`, value: 'hands' },
+        { name: `${info('📡')} Channels — List OpenFang channels`, value: 'channels' },
+        { name: `${info('🔒')} Security — OpenFang security report`, value: 'security' },
+        { name: `${info('🕸️')} Crawl — Single URL crawl`, value: 'crawl' },
+        { name: `${info('🕷️')} Deep Crawl — Multi-page BFS crawl`, value: 'deep-crawl' },
         { name: `${accent('⚙️ ')} Config — View/change settings`, value: 'config' },
         { name: `${accent('📊')} Stats — Agent performance`, value: 'stats' },
         new inquirer.Separator(),
@@ -47,6 +52,68 @@ export async function startTui(): Promise<void> {
     if (action === 'exit') {
       console.log(success('\nWHOAMI signing off. Stay autonomous.\n'));
       process.exit(0);
+    }
+
+    if (action === 'hands') {
+      if (!(backend as any).listHands) {
+        console.log(error('\nHands require OpenFang backend.'));
+        continue;
+      }
+      const hands = await (backend as any).listHands();
+      console.log(info(`\nOpenFang Hands (${hands.length}):`));
+      for (const h of hands) {
+        const st = h.status === 'active' ? success('active') : h.status === 'paused' ? warning('paused') : muted(h.status);
+        console.log(muted(`  ${h.name.padEnd(16)} ${st}  ${h.description || ''}`));
+      }
+      continue;
+    }
+
+    if (action === 'channels') {
+      if (!(backend as any).listChannels) {
+        console.log(error('\nChannels require OpenFang backend.'));
+        continue;
+      }
+      const chs = await (backend as any).listChannels();
+      console.log(info(`\nOpenFang Channels (${chs.length}):`));
+      for (const c of chs) {
+        const st = c.status === 'connected' ? success('connected') : muted(c.status);
+        console.log(muted(`  ${c.name.padEnd(18)} ${st}  ${c.adapter || ''}`));
+      }
+      continue;
+    }
+
+    if (action === 'security') {
+      if (!(backend as any).getSecurityReport) {
+        console.log(error('\nSecurity report requires OpenFang backend.'));
+        continue;
+      }
+      const rep = await (backend as any).getSecurityReport();
+      console.log(info('\nOpenFang Security Report:'));
+      const st = rep.status === 'active' ? success('ACTIVE') : warning('DEGRADED');
+      console.log(muted(`  Status: ${st}`));
+      console.log(muted(`  Layers: ${rep.layers}/16`));
+      continue;
+    }
+
+    if (action === 'crawl' || action === 'deep-crawl') {
+      if (!(backend as any).crawl) {
+        console.log(error('\nCrawl requires crawl4ai backend.'));
+        continue;
+      }
+      const { url, query } = await inquirer.prompt([
+        { type: 'input', name: 'url', message: 'URL to crawl:', validate: (v: string) => v.startsWith('http') ? true : 'Must be a valid URL' },
+        { type: 'input', name: 'query', message: 'Extraction query (optional):' },
+      ]);
+      const res = await (backend as any).crawl({
+        url,
+        deep: action === 'deep-crawl',
+        strategy: 'bfs',
+        maxPages: action === 'deep-crawl' ? 10 : undefined,
+        query: query || undefined,
+      });
+      if (res.ok) console.log(success(`\n${action === 'deep-crawl' ? 'Deep crawl' : 'Crawl'} complete.`));
+      else console.log(error(`\nCrawl failed: ${res.error}`));
+      continue;
     }
 
     if (action === 'config') {

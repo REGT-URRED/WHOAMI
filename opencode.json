@@ -2,8 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "agent": {
     "whoami": {
-      "description": "Meta-orquestador autónomo multi-capa — cerebro que gerencia agentes vía loops inteligentes — detecta, planifica, mejora, despliega, monitorea, corrige y entrega",
-      "file": "D:/ARCHIVO/whoami/agents/whoami.md",
+      "description": "Meta-orquestador autonómo multi-capa — cerebro que gerencia agentes via loops inteligentes — detecta, planifica, mejora, despliega, monitorea, corrige y entrega",
+      "file": "agents/whoami.md",
       "mode": "subagent",
       "hidden": true,
       "color": "#FB923C",
@@ -11,7 +11,7 @@
     },
     "plan": {
       "description": "Plan-only mode — generates plans but does NOT execute",
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/planner.txt}",
+      "prompt": "{file:prompts/_internal/planner.txt}",
       "mode": "primary",
       "color": "#60A5FA",
       "temperature": 0.2,
@@ -19,155 +19,496 @@
     },
     "build": {
       "description": "Fast build mode — executes BUILD pipeline directly (T2-T3). Clasifica scope T2/T3, despliega agentes necesarios (architect, tdd-guide, code-reviewer, build-error-resolver, ramon), verifica gates (build+lint+tests), y entrega resultado. Si scope es T4, sugiere /plan primero. No planifiques — clasifica y ejecuta.",
+      "prompt": "{file:prompts/_internal/build.txt}",
       "mode": "primary",
       "color": "#34D399",
-      "temperature": 0.2,
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/build.txt}"
+      "temperature": 0.2
     },
     "architect": {
       "description": "Senior software architect specializing in scalable, maintainable system design",
+      "prompt": "{file:prompts/_internal/architect.txt}",
       "mode": "subagent",
+      "color": "#60A5FA",
       "temperature": 0.2,
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/architect.txt}",
       "tools": { "read": true, "bash": true, "write": false, "edit": false }
     },
     "tdd-guide": {
       "description": "Test-Driven Development specialist enforcing write-tests-first methodology with 80%+ coverage",
+      "prompt": "{file:prompts/_internal/tdd-guide.txt}",
       "mode": "subagent",
+      "color": "#34D399",
       "temperature": 0.2,
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/tdd-guide.txt}",
       "tools": { "read": true, "write": true, "edit": true, "bash": true }
     },
     "code-reviewer": {
       "description": "Senior code reviewer ensuring high standards of code quality, security, and maintainability",
+      "prompt": "{file:prompts/_internal/code-reviewer.txt}",
       "mode": "subagent",
-      "temperature": 0.1,
       "color": "#A78BFA",
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/code-reviewer.txt}",
+      "temperature": 0.1,
       "tools": { "read": true, "bash": true }
     },
     "build-error-resolver": {
       "description": "Expert build error resolution specialist fixing TypeScript, compilation, and build errors with minimal changes",
+      "prompt": "{file:prompts/_internal/build-error-resolver.txt}",
       "mode": "subagent",
+      "color": "#F59E0B",
       "temperature": 0.1,
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/build-error-resolver.txt}",
       "tools": { "read": true, "write": true, "edit": true, "bash": true }
     },
     "security-reviewer": {
       "description": "Expert security specialist focused on identifying and remediating OWASP Top 10 vulnerabilities",
+      "prompt": "{file:prompts/_internal/security-reviewer.txt}",
       "mode": "subagent",
+      "color": "#EF4444",
       "temperature": 0.1,
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/security-reviewer.txt}",
       "tools": { "read": true, "bash": true, "write": true, "edit": true }
     },
     "refactor-cleaner": {
       "description": "Dead code cleanup, duplicate elimination, and consolidation specialist",
+      "prompt": "{file:prompts/_internal/refactor-cleaner.txt}",
       "mode": "subagent",
+      "color": "#8B5CF6",
       "temperature": 0.1,
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/refactor-cleaner.txt}",
       "tools": { "read": true, "write": true, "edit": true, "bash": true }
     },
     "planner": {
       "description": "Senior technical planner for decomposing complex features into actionable plans",
+      "prompt": "{file:prompts/_internal/planner.txt}",
       "mode": "subagent",
-      "temperature": 0.2,
       "color": "#3B82F6",
-      "prompt": "{file:D:/ARCHIVO/whoami/prompts/_internal/planner.txt}",
+      "temperature": 0.2,
       "tools": { "read": true, "bash": true, "write": false, "edit": false }
     },
     "ramon": {
-      "description": "Agente especializado en limpieza de código, detección de errores y corrección progresiva orientada a preservar funcionalidad",
+      "description": "Agente especializado en limpieza de codigo, deteccion de errores y correccion progresiva orientada a preservar funcionalidad",
+      "file": "agents/ramon.md",
       "mode": "subagent",
       "color": "#34D399",
-      "temperature": 0.2,
-      "file": "D:/ARCHIVO/whoami/agents/ramon.md"
+      "temperature": 0.2
     },
     "vega": {
-      "description": "Agente especializado en verificar, diagnosticar y corregir conexión Supabase en cualquier proyecto",
+      "description": "Agente especializado en verificar, diagnosticar y corregir conexion Supabase en cualquier proyecto",
+      "file": "agents/vega.md",
       "mode": "subagent",
-      "temperature": 0.2,
-      "file": "D:/ARCHIVO/whoami/agents/vega.md"
+      "color": "#3B82F6",
+      "temperature": 0.2
     },
     "e2e-runner": {
-      "description": "E2E browser testing with Playwright — verifica flujos críticos de usuario post-BUILD",
+      "description": "E2E browser testing with Playwright — verifica flujos criticos de usuario post-BUILD",
+      "file": "agents/e2e-runner.md",
       "mode": "subagent",
-      "temperature": 0.1,
-      "file": "D:/ARCHIVO/whoami/agents/e2e-runner.md"
+      "color": "#F97316",
+      "temperature": 0.1
     },
     "doc-updater": {
-      "description": "Documentación automática — genera/actualiza README, CHANGELOG, API docs post-delivery",
+      "description": "Documentacion automatica — genera/actualiza README, CHANGELOG, API docs post-delivery",
+      "file": "agents/doc-updater.md",
       "mode": "subagent",
-      "temperature": 0.2,
-      "file": "D:/ARCHIVO/whoami/agents/doc-updater.md"
+      "color": "#6366F1",
+      "temperature": 0.2
     },
     "reverse-explorer": {
-      "description": "Explora archivos, carpetas, estructura y metadatos sin asumir reglas — inventario y clasificación",
+      "description": "Explora archivos, carpetas, estructura y metadatos sin asumir reglas — inventario y clasificacion",
+      "file": "agents/reverse-explorer.md",
       "mode": "subagent",
-      "temperature": 0.1,
-      "file": "D:/ARCHIVO/whoami/agents/reverse-explorer.md"
+      "color": "#8B5CF6",
+      "temperature": 0.1
     },
     "reverse-hypothesis": {
-      "description": "Infere reglas, transformaciones y lógica implícita desde evidencia observada",
+      "description": "Infere reglas, transformaciones y logica implicita desde evidencia observada",
+      "file": "agents/reverse-hypothesis.md",
       "mode": "subagent",
-      "temperature": 0.1,
-      "file": "D:/ARCHIVO/whoami/agents/reverse-hypothesis.md"
+      "color": "#A855F7",
+      "temperature": 0.1
     },
     "reverse-validator": {
-      "description": "Valida hipótesis, busca contraejemplos y estima cobertura de reglas con muestreo estratégico",
+      "description": "Valida hipotesis, busca contraejemplos y estima cobertura de reglas con muestreo estrategico",
+      "file": "agents/reverse-validator.md",
       "mode": "subagent",
-      "temperature": 0.0,
-      "file": "D:/ARCHIVO/whoami/agents/reverse-validator.md"
+      "color": "#D946EF",
+      "temperature": 0.0
     },
     "reverse-spec-writer": {
-      "description": "Redacta el plano final del proceso observado y la propuesta de automatización",
+      "description": "Redacta el plano final del proceso observado y la propuesta de automatizacion",
+      "file": "agents/reverse-spec-writer.md",
       "mode": "subagent",
-      "temperature": 0.1,
-      "file": "D:/ARCHIVO/whoami/agents/reverse-spec-writer.md"
+      "color": "#EC4899",
+      "temperature": 0.1
     },
     "whoami-planner": {
       "description": "GOAP-like multi-path planner. Genera >=3 enfoques con precondiciones, riesgos, costos, y recomienda la ruta mas exacta. Ruflo-inspired.",
+      "file": "agents/whoami-planner.md",
       "mode": "subagent",
+      "color": "#8B5CF6",
       "temperature": 0.2,
-      "file": "D:/ARCHIVO/whoami/agents/whoami-planner.md",
       "tools": { "read": true, "bash": true, "grep": true, "glob": true, "write": false, "edit": false, "task": false }
     },
     "whoami-loop": {
       "description": "Ciclo de refinamiento iterativo. Recibe feedback, ajusta, re-ejecuta, repite hasta PASS o agota iteraciones (max 3). Ruflo autopilot-inspired.",
+      "file": "agents/whoami-loop.md",
       "mode": "subagent",
+      "color": "#F43F5E",
       "temperature": 0.2,
-      "file": "D:/ARCHIVO/whoami/agents/whoami-loop.md",
       "tools": { "read": true, "write": true, "edit": true, "bash": true, "grep": true, "glob": true, "task": true }
+    },
+    "assistant": {
+      "description": "OpenFang default assistant — conversational AI for general queries and tasks",
+      "mode": "subagent",
+      "temperature": 0.3,
+      "color": "#60A5FA",
+      "tools": { "read": true, "bash": true }
+    },
+    "coder": {
+      "description": "OpenFang code generation and software development agent",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "color": "#34D399",
+      "tools": { "read": true, "write": true, "edit": true, "bash": true, "grep": true, "glob": true }
+    },
+    "clip": {
+      "description": "OpenFang Clip Hand — YouTube downloader, moment detection, vertical shorts creation with captions and thumbnails",
+      "file": "agents/hands/clip.md",
+      "mode": "subagent",
+      "color": "#FF4444",
+      "temperature": 0.2
+    },
+    "lead": {
+      "description": "OpenFang Lead Hand — daily prospect discovery, ICP enrichment, scoring 0-100, dedup and delivery",
+      "file": "agents/hands/lead.md",
+      "mode": "subagent",
+      "color": "#00AAFF",
+      "temperature": 0.2
+    },
+    "collector": {
+      "description": "OpenFang Collector Hand — OSINT intelligence, continuous monitoring, change detection, knowledge graph",
+      "file": "agents/hands/collector.md",
+      "mode": "subagent",
+      "color": "#FF8800",
+      "temperature": 0.2
+    },
+    "predictor": {
+      "description": "OpenFang Predictor Hand — superforecasting with calibrated reasoning, confidence intervals, Brier score tracking",
+      "file": "agents/hands/predictor.md",
+      "mode": "subagent",
+      "color": "#AA66FF",
+      "temperature": 0.1
+    },
+    "researcher": {
+      "description": "OpenFang Researcher Hand — deep multi-source research, CRAAP credibility, cited reports, multi-language",
+      "file": "agents/hands/researcher.md",
+      "mode": "subagent",
+      "color": "#00FF88",
+      "temperature": 0.2
+    },
+    "twitter": {
+      "description": "OpenFang Twitter Hand — autonomous X/Twitter account manager, content creation, scheduling, engagement",
+      "file": "agents/hands/twitter.md",
+      "mode": "subagent",
+      "color": "#1DA1F2",
+      "temperature": 0.3
+    },
+    "browser": {
+      "description": "OpenFang Browser Hand — web automation, form filling, multi-step workflows, Playwright bridge",
+      "file": "agents/hands/browser.md",
+      "mode": "subagent",
+      "color": "#FFD700",
+      "temperature": 0.1
+    },
+    "crawl4ai-scraper": {
+      "description": "Crawl4AI single-page scraper — extrae contenido web a markdown/HTML/JSON limpio LLM-friendly",
+      "file": "agents/crawl4ai/scraper.md",
+      "mode": "subagent",
+      "color": "#10B981",
+      "temperature": 0.1
+    },
+    "crawl4ai-deep-crawler": {
+      "description": "Crawl4AI deep crawler — multi-page BFS/DFS crawling con max-pages y same-domain",
+      "file": "agents/crawl4ai/deep-crawler.md",
+      "mode": "subagent",
+      "color": "#059669",
+      "temperature": 0.1
+    },
+    "crawl4ai-extractor": {
+      "description": "Crawl4AI extractor — extraccion estructurada LLM-driven con queries y schemas CSS/XPath",
+      "file": "agents/crawl4ai/extractor.md",
+      "mode": "subagent",
+      "color": "#047857",
+      "temperature": 0.1
+    },
+    "autocode": {
+      "description": "Autoloop code generation agent — genera codigo siguiendo especificaciones y buenas practicas",
+      "file": "agents/autoloop/autocode.md",
+      "mode": "subagent",
+      "color": "#34D399",
+      "temperature": 0.1
+    },
+    "autoqa": {
+      "description": "Autoloop QA agent — verifica calidad, detecta regresiones y asegura estandares",
+      "file": "agents/autoloop/autoqa.md",
+      "mode": "subagent",
+      "color": "#A78BFA",
+      "temperature": 0.1
+    },
+    "autotest": {
+      "description": "Autoloop test agent — genera y ejecuta tests automatizados",
+      "file": "agents/autoloop/autotest.md",
+      "mode": "subagent",
+      "color": "#F59E0B",
+      "temperature": 0.1
+    },
+    "autofix": {
+      "description": "Autoloop fix agent — corrige errores y problemas de forma autonoma",
+      "file": "agents/autoloop/autofix.md",
+      "mode": "subagent",
+      "color": "#EF4444",
+      "temperature": 0.1
+    },
+    "autoreview": {
+      "description": "Autoloop review agent — revisa codigo y provee feedback estructurado",
+      "file": "agents/autoloop/autoreview.md",
+      "mode": "subagent",
+      "color": "#F97316",
+      "temperature": 0.1
+    },
+    "autosec": {
+      "description": "Autoloop security agent — identifica vulnerabilidades y aplica parches de seguridad",
+      "file": "agents/autoloop/autosec.md",
+      "mode": "subagent",
+      "color": "#DC2626",
+      "temperature": 0.1
+    },
+    "autospec": {
+      "description": "Autoloop spec agent — genera y mantiene especificaciones tecnicas",
+      "file": "agents/autoloop/autospec.md",
+      "mode": "subagent",
+      "color": "#3B82F6",
+      "temperature": 0.2
+    },
+    "page-agent": {
+      "description": "Page Agent — crea paginas web completas con Three.js, animaciones premium y diseno moderno",
+      "file": "agents/page-agent.md",
+      "mode": "subagent",
+      "color": "#6366F1",
+      "temperature": 0.2
+    },
+    "sandbox-agent": {
+      "description": "Sandbox agent — entorno aislado para ejecucion segura de codigo y pruebas",
+      "file": "agents/zero/sandbox-agent.md",
+      "mode": "subagent",
+      "color": "#F59E0B",
+      "temperature": 0.1
+    },
+    "session-agent": {
+      "description": "Session agent — gestion de sesiones de aprendizaje y contexto persistente",
+      "file": "agents/zero/session-agent.md",
+      "mode": "subagent",
+      "color": "#3B82F6",
+      "temperature": 0.2
+    },
+    "agent-reach": {
+      "description": "Agent Reach — 14-platform web access (Twitter, Reddit, GitHub, YouTube, RSS, etc.)",
+      "file": "agents/agent-reach/agent-reach.md",
+      "mode": "subagent",
+      "color": "#00AAFF",
+      "temperature": 0.1
+    },
+    "agent-reach-web": {
+      "description": "Agent Reach web scraper — extrae contenido de cualquier URL via Jina Reader/crawl4ai/OpenFang",
+      "file": "agents/agent-reach/web-scraper.md",
+      "mode": "subagent",
+      "color": "#0EA5E9",
+      "temperature": 0.1
+    },
+    "agent-reach-twitter": {
+      "description": "Agent Reach Twitter/X agent — busca, lee hilos y extrae conversaciones",
+      "file": "agents/agent-reach/twitter-agent.md",
+      "mode": "subagent",
+      "color": "#1DA1F2",
+      "temperature": 0.2
+    },
+    "agent-reach-youtube": {
+      "description": "Agent Reach YouTube agent — obtiene transcripciones y metadatos de videos",
+      "file": "agents/agent-reach/youtube-agent.md",
+      "mode": "subagent",
+      "color": "#FF0000",
+      "temperature": 0.1
+    },
+    "agent-reach-github": {
+      "description": "Agent Reach GitHub agent — consulta repos, README, issues y actividad",
+      "file": "agents/agent-reach/github-agent.md",
+      "mode": "subagent",
+      "color": "#2DA44E",
+      "temperature": 0.1
+    },
+    "agent-reach-reddit": {
+      "description": "Agent Reach Reddit agent — lee posts, hilos y comentarios de subreddits",
+      "file": "agents/agent-reach/reddit-agent.md",
+      "mode": "subagent",
+      "color": "#FF4500",
+      "temperature": 0.2
+    },
+    "agent-reach-rss": {
+      "description": "Agent Reach RSS agent — parsea feeds RSS/Atom y devuelve entradas",
+      "file": "agents/agent-reach/rss-agent.md",
+      "mode": "subagent",
+      "color": "#F97316",
+      "temperature": 0.1
+    },
+    "frontend-developer": {
+      "description": "Frontend developer especializado en React, Tailwind, FluxUI y experiencias de usuario premium",
+      "file": "agents/agency/frontend-developer.md",
+      "mode": "subagent",
+      "color": "#3B82F6",
+      "temperature": 0.2
+    },
+    "backend-architect": {
+      "description": "Backend architect especializado en arquitecturas escalables, APIs y bases de datos",
+      "file": "agents/agency/backend-architect.md",
+      "mode": "subagent",
+      "color": "#8B5CF6",
+      "temperature": 0.1
+    },
+    "product-manager": {
+      "description": "Product manager — define requisitos, historias de usuario y priorizacion",
+      "file": "agents/agency/product-manager.md",
+      "mode": "subagent",
+      "color": "#F59E0B",
+      "temperature": 0.2
+    },
+    "ui-designer": {
+      "description": "UI/UX designer — crea interfaces atractivas, accesibles y coherentes",
+      "file": "agents/agency/ui-designer.md",
+      "mode": "subagent",
+      "color": "#EC4899",
+      "temperature": 0.2
+    },
+    "ai-engineer": {
+      "description": "AI/ML engineer — implementa modelos, pipelines y soluciones de IA",
+      "file": "agents/agency/ai-engineer.md",
+      "mode": "subagent",
+      "color": "#10B981",
+      "temperature": 0.1
+    },
+    "devops-automator": {
+      "description": "DevOps automator — CI/CD, infraestructura como codigo, despliegue automatizado",
+      "file": "agents/agency/devops-automator.md",
+      "mode": "subagent",
+      "color": "#F97316",
+      "temperature": 0.1
+    },
+    "security-auditor": {
+      "description": "Security auditor — auditoria de seguridad, OWASP, cumplimiento y hardening",
+      "file": "agents/agency/security-auditor.md",
+      "mode": "subagent",
+      "color": "#EF4444",
+      "temperature": 0.1
+    },
+    "performance-tester": {
+      "description": "Performance tester — benchmarks, load testing, profiling y optimizacion",
+      "file": "agents/agency/performance-tester.md",
+      "mode": "subagent",
+      "color": "#A78BFA",
+      "temperature": 0.1
+    },
+    "data-analyst": {
+      "description": "Data analyst — analisis de datos, visualizaciones, informes y metricas",
+      "file": "agents/agency/data-analyst.md",
+      "mode": "subagent",
+      "color": "#6366F1",
+      "temperature": 0.1
+    },
+    "content-strategist": {
+      "description": "Content strategist — estrategia de contenido, SEO, copywriting y brand voice",
+      "file": "agents/agency/content-strategist.md",
+      "mode": "subagent",
+      "color": "#F43F5E",
+      "temperature": 0.2
     }
   },
   "command": {
     "plan": {
-      "description": "Plan-only mode — planner generates >=3 enfoques pero NO ejecuta",
-      "template": "{file:D:/ARCHIVO/whoami/commands/plan.md}\n\n$ARGUMENTS",
+      "description": "Plan-only mode — planner genera >=3 enfoques pero NO ejecuta",
+      "template": "{file:commands/plan.md}\n\n$ARGUMENTS",
       "agent": "planner",
       "subtask": true
     },
     "build": {
-      "description": "Fast build mode — WHOAMI executes BUILD pipeline directly (T2-T3)",
-      "template": "{file:D:/ARCHIVO/whoami/commands/build.md}\n\n$ARGUMENTS",
+      "description": "Fast build mode — WHOAMI ejecuta BUILD pipeline directamente (T2-T3)",
+      "template": "{file:commands/build.md}\n\n$ARGUMENTS",
       "agent": "build",
       "subtask": true
     },
     "review": {
-      "description": "Audita el diff actual por sobre-ingeniería aplicando la Escalera de Optimalidad",
-      "template": "{file:D:/ARCHIVO/whoami/commands/review.md}\n\n$ARGUMENTS",
+      "description": "Audita el diff actual por sobre-ingenieria aplicando la Escalera de Optimalidad",
+      "template": "{file:commands/review.md}\n\n$ARGUMENTS",
       "agent": "code-reviewer",
       "subtask": true
     },
     "audit-open": {
-      "description": "Audita el repositorio COMPLETO por sobre-ingeniería y código inflado",
-      "template": "{file:D:/ARCHIVO/whoami/commands/audit-open.md}\n\n$ARGUMENTS",
+      "description": "Audita el repositorio COMPLETO por sobre-ingenieria y codigo inflado",
+      "template": "{file:commands/audit-open.md}\n\n$ARGUMENTS",
       "agent": "ramon",
       "subtask": true
     },
     "whoami": {
       "description": "WHOAMI meta-orchestrator — despliega el pipeline multi-agente completo",
-      "template": "{file:D:/ARCHIVO/whoami/commands/whoami.md}\n\n$ARGUMENTS",
+      "template": "{file:commands/whoami.md}\n\n$ARGUMENTS",
       "agent": "whoami",
+      "subtask": true
+    },
+    "openfang": {
+      "description": "OpenFang control — manage Hands, channels, and security",
+      "template": "Eres el controlador OpenFang. Analiza el comando y ejecuta la accion correspondiente.\n\n$ARGUMENTS",
+      "agent": "assistant",
+      "subtask": true
+    },
+    "clip": {
+      "description": "Download YouTube video and create vertical shorts with captions",
+      "template": "{file:commands/hands/clip.md}\n\n$ARGUMENTS",
+      "agent": "clip",
+      "subtask": true
+    },
+    "crawl": {
+      "description": "Crawl a URL with Crawl4AI — single page, deep BFS/DFS, or LLM extraction",
+      "template": "{file:commands/crawl4ai/crawl.md}\n\n$ARGUMENTS",
+      "agent": "crawl4ai-scraper",
+      "subtask": true
+    },
+    "autoloop": {
+      "description": "Autoloop — pipeline autonomo de codigo, tests, QA, fix, review, security y spec",
+      "template": "{file:commands/autoloop.md}\n\n$ARGUMENTS",
+      "agent": "autocode",
+      "subtask": true
+    },
+    "page-agent": {
+      "description": "Page Agent — crea paginas web completas con efectos visuales premium",
+      "template": "{file:commands/page-agent.md}\n\n$ARGUMENTS",
+      "agent": "page-agent",
+      "subtask": true
+    },
+    "design": {
+      "description": "Design mode — disena y prototipa interfaces con el page-agent",
+      "template": "{file:commands/design.md}\n\n$ARGUMENTS",
+      "agent": "page-agent",
+      "subtask": true
+    },
+    "zero": {
+      "description": "Zero — sandbox y session agents para ejecucion aislada y contexto persistente",
+      "template": "{file:commands/zero.md}\n\n$ARGUMENTS",
+      "agent": "sandbox-agent",
+      "subtask": true
+    },
+    "reach": {
+      "description": "Agent Reach — accede a 14+ plataformas web: /reach:web, /reach:twitter, /reach:youtube, /reach:github, /reach:reddit, /reach:rss, /reach:doctor",
+      "template": "{file:commands/agent-reach.md}\n\n$ARGUMENTS",
+      "agent": "agent-reach",
+      "subtask": true
+    },
+    "agency": {
+      "description": "Agency — despliega equipo multi-agente (frontend, backend, PM, UI, AI, DevOps, security, performance, data, content)",
+      "template": "{file:commands/agency.md}\n\n$ARGUMENTS",
+      "agent": "data-analyst",
       "subtask": true
     }
   }

@@ -1,0 +1,1 @@
+{"version":"2.1.0","dependencies":{"@whoami/core":"workspace:*"},"peerDependencies":{},"author":"REGT-URRED","types":"dist/index.d.ts","name":"@whoami/sandbox","scripts":{"dev":"tsc --watch","clean":"rm -rf dist","build":"tsc"},"main":"dist/index.js","description":"WHOAMI Sandbox — permission engine, worktree isolation, identity trust","license":"MIT"}

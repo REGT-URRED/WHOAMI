@@ -1,0 +1,1 @@
+{"version":"2.1.0","dependencies": {},"peerDependencies":{},"author":"REGT-URRED","types":"dist/index.d.ts","name":"@whoami/providers","scripts":{"dev":"tsc --watch","clean":"rm -rf dist","build":"tsc"},"main":"dist/index.js","description":"WHOAMI Providers — LLM model abstraction, routing, shadow testing","license":"MIT"}

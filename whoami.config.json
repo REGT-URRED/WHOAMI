@@ -1,7 +1,7 @@
 {
   "name": "WHOAMI",
-  "version": "2.0.0",
-  "backend": "ruflo",
+  "version": "2.3.0",
+  "backend": "openfang",
   "theme": "neon",
   "colors": {
     "primary": "#00FF88",
@@ -14,8 +14,20 @@
     "muted": "#444444"
   },
   "agents": {
-    "enabled": ["architect", "tdd-guide", "code-reviewer", "build-error-resolver", "ramon", "code-reviewer", "e2e-runner", "doc-updater"],
-    "disabled": ["vega", "security-reviewer", "refactor-cleaner", "whoami-planner", "whoami-loop"]
+    "enabled": [
+      "architect", "tdd-guide", "code-reviewer", "build-error-resolver",
+      "ramon", "e2e-runner", "doc-updater",
+      "clip", "lead", "collector", "predictor", "researcher", "twitter", "browser",
+      "crawl4ai-scraper", "crawl4ai-deep-crawler", "crawl4ai-extractor",
+      "autocode", "autoqa", "autotest", "autofix", "autoreview", "autosec", "autospec",
+      "page-agent", "sandbox-agent", "session-agent",
+      "agent-reach", "agent-reach-web", "agent-reach-twitter", "agent-reach-youtube",
+      "agent-reach-github", "agent-reach-reddit", "agent-reach-rss",
+      "frontend-developer", "backend-architect", "product-manager", "ui-designer",
+      "ai-engineer", "devops-automator", "security-auditor", "security-reviewer",
+      "performance-tester", "data-analyst", "content-strategist"
+    ],
+    "disabled": ["vega", "refactor-cleaner", "whoami-planner", "whoami-loop"]
   },
   "pipelines": {
     "build": [
@@ -42,6 +54,53 @@
       { "agent": "reverse-hypothesis" },
       { "agent": "reverse-validator" },
       { "agent": "reverse-spec-writer" }
+    ],
+    "research": [
+      { "agent": "researcher" },
+      { "agent": "predictor" }
+    ],
+    "social": [
+      { "agent": "twitter" },
+      { "agent": "doc-updater" }
+    ],
+    "intel": [
+      { "agent": "collector" },
+      { "agent": "researcher" }
+    ],
+    "autocode": [
+      { "agent": "autocode" },
+      { "agent": "code-reviewer" }
+    ],
+    "autotest": [
+      { "agent": "autotest" },
+      { "agent": "autoqa" }
+    ],
+    "autofix": [
+      { "agent": "autofix" },
+      { "agent": "tdd-guide" }
+    ],
+    "autosec": [
+      { "agent": "autosec" },
+      { "agent": "security-reviewer" }
+    ],
+    "research-deep": [
+      { "agent": "agent-reach-web" },
+      { "agent": "researcher" },
+      { "agent": "predictor" }
+    ],
+    "social-media": [
+      { "agent": "agent-reach-twitter" },
+      { "agent": "twitter" },
+      { "agent": "doc-updater" }
+    ],
+    "frontend": [
+      { "agent": "frontend-developer" },
+      { "agent": "ui-designer" }
+    ],
+    "agency-build": [
+      { "agent": "architect" },
+      { "agent": "frontend-developer" },
+      { "agent": "code-reviewer" }
     ]
   },
   "memory": {
@@ -49,5 +108,34 @@
     "backend": "sqlite",
     "path": "~/.whoami/memory.db"
   },
-  "autoLearn": true
+  "autoLearn": true,
+  "openfang": {
+    "endpoint": "http://127.0.0.1:4200",
+    "channels": ["telegram", "slack", "discord", "email"],
+    "defaultHands": ["researcher", "browser"]
+  },
+  "crawl4ai": {
+    "mode": "cli",
+    "cliPath": "crwl",
+    "dockerEndpoint": "http://127.0.0.1:8000",
+    "defaultStrategy": "bfs",
+    "defaultMaxPages": 10,
+    "outputFormat": "markdown",
+    "stealth": true
+  },
+  "autoloop": {
+    "mode": "cli",
+    "registryPath": "~/.autoloop/registry.jsonl"
+  },
+  "pageAgent": {
+    "model": "qwen3.5-plus",
+    "language": "en-US"
+  },
+  "zero": {
+    "permissionMode": "read-only",
+    "workspace": "."
+  },
+  "agentReach": {
+    "platforms": ["web", "twitter", "github", "youtube", "reddit", "rss"]
+  }
 }

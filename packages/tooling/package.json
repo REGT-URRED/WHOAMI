@@ -1,0 +1,1 @@
+{"version":"2.1.0","dependencies":{"@whoami/core":"workspace:*","zod":"^4.4.3"},"author":"REGT-URRED","types":"dist/index.d.ts","name":"@whoami/tooling","scripts":{"dev":"tsc --watch","clean":"rm -rf dist","build":"tsc"},"main":"dist/index.js","description":"WHOAMI Tooling — MacroTool, LLM auto-fixer, health diagnostics","license":"MIT"}
