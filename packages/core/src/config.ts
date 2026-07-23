@@ -12,7 +12,7 @@ const CONFIG_FILES = [
 const DEFAULT_CONFIG: WhoamiConfig = {
   name: 'WHOAMI',
   version: '2.3.0',
-  backend: 'ruflo',
+  backend: 'harness',
   theme: 'default',
   agents: {
     enabled: [],
@@ -39,12 +39,17 @@ const DEFAULT_CONFIG: WhoamiConfig = {
       { agent: 'reverse-spec-writer', description: 'Write spec' },
     ],
   },
+  harness: {
+    subsystems: ['instructions', 'state', 'verification', 'scope', 'lifecycle'],
+    evalsDir: '.claude/evals',
+    harnessDir: '.harness',
+  },
   memory: {
-    enabled: false,
+    enabled: true,
     backend: 'sqlite',
     path: '~/.whoami/memory.db',
   },
-  autoLearn: false,
+  autoLearn: true,
   crawl4ai: {
     mode: 'cli',
     cliPath: 'crwl',

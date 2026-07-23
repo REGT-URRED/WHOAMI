@@ -424,6 +424,88 @@
       "mode": "subagent",
       "color": "#F43F5E",
       "temperature": 0.2
+    },
+    "browser-daemon": {
+      "description": "Headless browser agent — fast page navigation, screenshots, interaction testing via gstack browse daemon",
+      "file": "agents/browser-daemon.md",
+      "mode": "subagent",
+      "color": "#FFD700",
+      "temperature": 0.1
+    },
+    "seo-specialist": {
+      "description": "SEO & GEO specialist — audits, keyword research, SERP analysis, schema markup",
+      "file": "agents/seo-specialist.md",
+      "mode": "subagent",
+      "color": "#10B981",
+      "temperature": 0.1
+    },
+    "image-designer": {
+      "description": "AI image/logo/banner generation specialist using Gemini 3 Pro",
+      "file": "agents/image-designer.md",
+      "mode": "subagent",
+      "color": "#EC4899",
+      "temperature": 0.2
+    },
+    "producthunt-agent": {
+      "description": "Product Hunt API agent — posts, launches, topics, makers, trends",
+      "file": "agents/producthunt-agent.md",
+      "mode": "subagent",
+      "color": "#F97316",
+      "temperature": 0.1
+    },
+    "domain-hunter": {
+      "description": "Domain name search — brainstorming, WHOIS availability, registrar price comparison",
+      "file": "agents/domain-hunter.md",
+      "mode": "subagent",
+      "color": "#6366F1",
+      "temperature": 0.1
+    },
+    "spec-writer-v2": {
+      "description": "Five-phase specification writer — why, scope, tech study, draft, final file",
+      "file": "agents/spec-writer-v2.md",
+      "mode": "subagent",
+      "color": "#8B5CF6",
+      "temperature": 0.1
+    },
+    "harness-creator": {
+      "description": "Harness Engineering specialist — scaffolds and validates five-subsystem harness (Instructions, State, Verification, Scope, Lifecycle)",
+      "file": "agents/harness-creator.md",
+      "mode": "subagent",
+      "color": "#06B6D4",
+      "temperature": 0.1,
+      "tools": { "read": true, "bash": true, "write": true, "edit": true, "grep": true, "glob": true }
+    },
+    "stack-detector": {
+      "description": "Technology stack detector — identifies languages, frameworks, package managers in any project (92 stacks, 30+ languages)",
+      "file": "agents/stack-detector.md",
+      "mode": "subagent",
+      "color": "#14B8A6",
+      "temperature": 0.1,
+      "tools": { "read": true, "bash": true, "grep": true, "glob": true }
+    },
+    "harness-configurator": {
+      "description": "Project harness configurator — generates AGENTS.md, feature_list.json, init.sh, progress.md, session-handoff.md",
+      "file": "agents/harness-configurator.md",
+      "mode": "subagent",
+      "color": "#0EA5E9",
+      "temperature": 0.2,
+      "tools": { "read": true, "bash": true, "write": true, "edit": true, "grep": true, "glob": true, "task": true }
+    },
+    "team-factory": {
+      "description": "Multi-agent team factory — generates specialized agent teams from domain descriptions, 6 architectural patterns, 3 execution modes",
+      "file": "agents/team-factory.md",
+      "mode": "subagent",
+      "color": "#D946EF",
+      "temperature": 0.2,
+      "tools": { "read": true, "bash": true, "write": true, "edit": true, "grep": true, "glob": true, "task": true }
+    },
+    "eval-harness": {
+      "description": "Eval-Driven Development specialist — defines capability/regression evals, runs pass@k metrics, promotes discovered skills to global WHOAMI memory",
+      "file": "agents/eval-harness.md",
+      "mode": "subagent",
+      "color": "#22C55E",
+      "temperature": 0.1,
+      "tools": { "read": true, "bash": true, "write": true, "edit": true, "grep": true, "glob": true, "task": true }
     }
   },
   "command": {
@@ -509,6 +591,24 @@
       "description": "Agency — despliega equipo multi-agente (frontend, backend, PM, UI, AI, DevOps, security, performance, data, content)",
       "template": "{file:commands/agency.md}\n\n$ARGUMENTS",
       "agent": "data-analyst",
+      "subtask": true
+    },
+    "harness": {
+      "description": "Harness Engineering — scaffold and validate five-subsystem harness for any project",
+      "template": "Eres el harness-creator. $ARGUMENTS",
+      "agent": "harness-creator",
+      "subtask": true
+    },
+    "eval": {
+      "description": "Eval-Driven Development — define capability/regression evals and run pass@k metrics",
+      "template": "Eres el eval-harness. $ARGUMENTS",
+      "agent": "eval-harness",
+      "subtask": true
+    },
+    "team": {
+      "description": "Team Factory — generate multi-agent teams from domain descriptions",
+      "template": "Eres el team-factory. $ARGUMENTS",
+      "agent": "team-factory",
       "subtask": true
     }
   }

@@ -35,9 +35,22 @@ New-Item -ItemType Junction -Path $SkillsDir -Target "$WHOAMI_ROOT\skills" -Forc
 Write-Host "WHOAMI activado exitosamente." -ForegroundColor Green
 Write-Host "Abre opencode desde esta carpeta para usar WHOAMI." -ForegroundColor Yellow
 Write-Host ""
+Write-Host "Harness inicializado en: $ProjectDir" -ForegroundColor Cyan
+$HarnessDir = Join-Path -Path $ProjectDir -ChildPath ".harness"
+$EvalsDir = Join-Path -Path $ProjectDir -ChildPath ".claude\evals"
+$ClaudeDir = Join-Path -Path $ProjectDir -ChildPath ".claude"
+if (-not (Test-Path -LiteralPath $ClaudeDir)) { New-Item -ItemType Directory -Path $ClaudeDir -Force | Out-Null }
+if (-not (Test-Path -LiteralPath $EvalsDir)) { New-Item -ItemType Directory -Path $EvalsDir -Force | Out-Null }
+if (-not (Test-Path -LiteralPath $HarnessDir)) { New-Item -ItemType Directory -Path $HarnessDir -Force | Out-Null }
+Write-Host "  .claude/evals/   — Eval-Driven Development artifacts" -ForegroundColor DarkGray
+Write-Host "  .harness/        — Harness state and logs" -ForegroundColor DarkGray
+Write-Host ""
 Write-Host "Comandos disponibles:" -ForegroundColor Cyan
 Write-Host "  /whoami      Meta-orquestador multi-agente"
-Write-Host "  /plan        Modo planificación (sin ejecución)"
-Write-Host "  /build       Build rápido T2-T3"
-Write-Host "  /review      Auditoría de optimalidad"
-Write-Host "  /audit-open  Auditoría completa del repositorio"
+Write-Host "  /plan        Modo planificacion (sin ejecucion)"
+Write-Host "  /build       Build rapido T2-T3"
+Write-Host "  /review      Auditoria de optimalidad"
+Write-Host "  /audit-open  Auditoria completa del repositorio"
+Write-Host "  /harness     Harness Engineering (crear y validar harness)"
+Write-Host "  /eval        Eval-Driven Development (definir, ejecutar, promover)"
+Write-Host "  /team        Team Factory (generar equipo multi-agente)"

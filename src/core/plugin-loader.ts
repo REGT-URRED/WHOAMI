@@ -4,6 +4,8 @@ import { CbmBackend } from '../backends/cbm';
 import { GentleBackend } from '../backends/gentle';
 import { OpenFangBackend } from '../backends/openfang';
 import { Crawl4AIBackend } from '../backends/crawl4ai';
+import { GstackBrowserBackend } from '../backends/gstack-browser';
+import { HarnessBackend } from '../backends/harness';
 
 function makeStubBackend(name: string, desc: string): (cfg?: WhoamiConfig) => AgentBackend {
   return () => ({
@@ -34,6 +36,8 @@ const BACKENDS: Record<string, (cfg?: WhoamiConfig) => AgentBackend> = {
   zero: makeStubBackend('zero', 'Zero — permission sandbox, session management, streaming'),
   ponytail: makeStubBackend('ponytail', 'Ponytail — 7-rung optimality ladder orchestration'),
   agency: makeStubBackend('agency', 'Agency — 30+ specialized agent personalities'),
+  'gstack-browser': () => new GstackBrowserBackend(),
+  harness: (cfg?: WhoamiConfig) => new HarnessBackend(cfg),
 };
 
 export function getBackend(name: string, config?: WhoamiConfig): AgentBackend {

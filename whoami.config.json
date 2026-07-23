@@ -1,7 +1,7 @@
 {
   "name": "WHOAMI",
   "version": "2.3.0",
-  "backend": "openfang",
+  "backend": "harness",
   "theme": "neon",
   "colors": {
     "primary": "#00FF88",
@@ -25,7 +25,9 @@
       "agent-reach-github", "agent-reach-reddit", "agent-reach-rss",
       "frontend-developer", "backend-architect", "product-manager", "ui-designer",
       "ai-engineer", "devops-automator", "security-auditor", "security-reviewer",
-      "performance-tester", "data-analyst", "content-strategist"
+      "performance-tester", "data-analyst", "content-strategist",
+      "browser-daemon", "seo-specialist", "image-designer", "producthunt-agent", "domain-hunter", "spec-writer-v2",
+      "harness-creator", "stack-detector", "harness-configurator", "team-factory", "eval-harness"
     ],
     "disabled": ["vega", "refactor-cleaner", "whoami-planner", "whoami-loop"]
   },
@@ -101,6 +103,43 @@
       { "agent": "architect" },
       { "agent": "frontend-developer" },
       { "agent": "code-reviewer" }
+    ],
+    "seo": [
+      { "agent": "seo-specialist" }
+    ],
+    "design-images": [
+      { "agent": "image-designer" }
+    ],
+    "product-research": [
+      { "agent": "producthunt-agent" }
+    ],
+    "domain": [
+      { "agent": "domain-hunter" }
+    ],
+    "spec-v2": [
+      { "agent": "spec-writer-v2" }
+    ],
+    "browse": [
+      { "agent": "browser-daemon" }
+    ],
+    "harness-create": [
+      { "agent": "harness-creator" }
+    ],
+    "harness-validate": [
+      { "agent": "harness-creator" },
+      { "agent": "eval-harness" }
+    ],
+    "harness-setup": [
+      { "agent": "stack-detector" },
+      { "agent": "harness-configurator" },
+      { "agent": "eval-harness" }
+    ],
+    "harness-team": [
+      { "agent": "team-factory" },
+      { "agent": "eval-harness" }
+    ],
+    "eval": [
+      { "agent": "eval-harness" }
     ]
   },
   "memory": {
@@ -109,6 +148,12 @@
     "path": "~/.whoami/memory.db"
   },
   "autoLearn": true,
+  "harness": {
+    "subsystems": ["instructions", "state", "verification", "scope", "lifecycle"],
+    "evalsDir": ".claude/evals",
+    "harnessDir": ".harness",
+    "delegateBackend": "openfang"
+  },
   "openfang": {
     "endpoint": "http://127.0.0.1:4200",
     "channels": ["telegram", "slack", "discord", "email"],

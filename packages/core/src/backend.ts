@@ -131,6 +131,12 @@ export interface WhoamiConfig {
     path: string;
   };
   autoLearn: boolean;
+  harness?: {
+    subsystems: string[];
+    evalsDir: string;
+    harnessDir: string;
+    delegateBackend?: string;
+  };
   openfang?: OpenFangConfig;
   crawl4ai?: Crawl4AIConfig;
 }

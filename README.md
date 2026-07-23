@@ -12,7 +12,7 @@
 # WHOAMI — The Modular Agent Operating System
 
 A meta-orchestrator that doesn't execute code directly. It classifies, selects, and deploys
-specialized agents across **11 pluggable backends**. Like a brain that coordinates specialists.
+specialized agents across **13 pluggable backends**. Like a brain that coordinates specialists.
 Swap backends at runtime, define your own pipelines, add agent personalities, connect 40+
 messaging channels. Built as a pnpm monorepo with **17 packages**, **59 agent definitions**,
 **55 skills**, and integrations with 9 external ecosystems.
@@ -21,10 +21,10 @@ messaging channels. Built as a pnpm monorepo with **17 packages**, **59 agent de
 [![License](https://img.shields.io/badge/license-MIT-blue)]()
 [![TypeScript](https://img.shields.io/badge/typescript-5.0-blue)]()
 [![pnpm](https://img.shields.io/badge/pnpm-11.5-orange)]()
-[![Backends](https://img.shields.io/badge/backends-11-purple)]()
+[![Backends](https://img.shields.io/badge/backends-13-purple)]()
 [![Agents](https://img.shields.io/badge/agents-59-green)]()
 
-**17 packages · 11 backends · 59 agents · 15 pipelines · 55 skills · 40 channels · 52 agent files**
+**17 packages · 13 backends · 71 agents · 26 pipelines · 63 skills · 40 channels · 58 agent files**
 
 ---
 
@@ -34,7 +34,7 @@ WHOAMI v2.3 is built on a fully modular architecture where every layer is replac
 
 - **AgentBackend interface** — a single TypeScript interface (`spawnAgent`, `runWorkflow`, `listAgents`, `healthCheck`) that any backend must implement. Swap the entire execution engine by changing one config value.
 
-- **11 backend implementations** — 5 real backends that integrate with live services (Ruflo, CBM, Gentle, OpenFang, Crawl4AI) and 6 stub backends that act as bridges to external repos (Agent Reach, Autoloop, Page Agent, Zero, Ponytail, Agency). All registered through the same `plugin-loader.ts` registry.
+- **11 backend implementations** — 5 real backends + 6 stub backends = 13 total. All registered through `plugin-loader.ts`. Default: `harness` — wraps any delegate backend with the five-subsystem harness.
 
 - **Plugin system (`registerBackend`)** — any package or config can call `registerBackend(name, factory)` to add new backends at runtime. No need to fork the monorepo.
 
@@ -50,21 +50,23 @@ WHOAMI v2.3 is built on a fully modular architecture where every layer is replac
 
 ## Backends
 
-All 11 backends are registered in `src/core/plugin-loader.ts` and selectable via `whoami.config.json`.
+All 13 backends are registered in `src/core/plugin-loader.ts` and selectable via `whoami.config.json`.
 
 | Backend | Type | Description | How to Use |
 |---------|------|-------------|------------|
-| `ruflo` | Real | Ruflo AI agent orchestration — spawns agents via `npx ruflo@latest`. Default backend. | `"backend": "ruflo"` — requires `npx ruflo@latest` |
-| `cbm` | Real | Codebase-memory-mcp knowledge graph — searches code structure via `codebase-memory-mcp cli`. | `"backend": "cbm"` — requires `codebase-memory-mcp` installed |
-| `gentle` | Real | Gentle-AI ecosystem configurator — integration pending, returns stub responses. | `"backend": "gentle"` — ready for integration |
-| `openfang` | Real | OpenFang Agent OS — 7 autonomous Hands, 53 tools, 40 channels, 16 security layers. Connects to running OpenFang instance. | `"backend": "openfang"` — requires OpenFang at localhost:4200 |
-| `crawl4ai` | Real | Crawl4AI — LLM-friendly web crawler. Single-page scrape, deep BFS/DFS crawl, structured LLM extraction. | `"backend": "crawl4ai"` — requires `pip install -U crawl4ai` |
-| `agent-reach` | Stub | Agent Reach — 14-platform web access bridge (Twitter, GitHub, YouTube, Reddit, RSS). | `"backend": "agent-reach"` — requires `pip install agent-reach` |
-| `autoloop` | Stub | Autoloop — autonomous loop harness with 7 presets (autocode, autotest, autofix, autoreview, autosec, autoqa, autospec). | `"backend": "autoloop"` |
-| `page-agent` | Stub | Page Agent — in-page GUI agent that controls the browser DOM through text-based commands. | `"backend": "page-agent"` |
-| `zero` | Stub | Zero — permission sandbox, session management, streaming protocol for agent communication. | `"backend": "zero"` |
-| `ponytail` | Stub | Ponytail — 7-rung Optimality Ladder that enforces code minimalism and YAGNI discipline. | `"backend": "ponytail"` |
-| `agency` | Stub | Agency — 30+ specialized agent personalities across 15 divisions (frontend, backend, devops, security, data, content, AI, testing, UI, product, management, performance). | `"backend": "agency"` |
+| `harness` | Real | **Default** — Harness Engineering backend. Implements five-subsystem model, EDD, skill promotion, cross-project auto-learning. Delegates non-harness agents to configured `delegateBackend`. | `"backend": "harness"` — no external deps, works standalone |
+| `openfang` | Real | OpenFang Agent OS — 7 autonomous Hands, 53 tools, 40 channels, 16 security layers. | `"backend": "openfang"` — requires OpenFang at localhost:4200 |
+| `crawl4ai` | Real | Crawl4AI — LLM-friendly web crawler. Single-page scrape, deep crawl, structured extraction. | `"backend": "crawl4ai"` — requires `pip install crawl4ai` |
+| `ruflo` | Real | Ruflo AI agent orchestration — spawns agents via `npx ruflo@latest`. | `"backend": "ruflo"` — requires npx ruflo@latest |
+| `cbm` | Real | Codebase-memory-mcp knowledge graph. | `"backend": "cbm"` — requires codebase-memory-mcp |
+| `gstack-browser` | Real | Gstack headless browser daemon — sub-100ms page navigation. | `"backend": "gstack-browser"` — requires browse binary |
+| `gentle` | Real | Gentle-AI ecosystem configurator. | `"backend": "gentle"` |
+| `agent-reach` | Stub | Agent Reach — 14-platform web access bridge. | `"backend": "agent-reach"` |
+| `autoloop` | Stub | Autoloop — autonomous loop harness with 7 presets. | `"backend": "autoloop"` |
+| `page-agent` | Stub | Page Agent — in-page GUI agent, DOM control. | `"backend": "page-agent"` |
+| `zero` | Stub | Zero — permission sandbox, session management. | `"backend": "zero"` |
+| `ponytail` | Stub | Ponytail — 7-rung Optimality Ladder. | `"backend": "ponytail"` |
+| `agency` | Stub | Agency — 30+ specialized agent personalities. | `"backend": "agency"` |
 
 ---
 
@@ -81,6 +83,11 @@ All 11 backends are registered in `src/core/plugin-loader.ts` and selectable via
 | [agent-reach](https://github.com/Panniantong/agent-reach) | 14-platform web access bridge: Twitter/X, GitHub, YouTube, Reddit, RSS feeds, and web scraping with structured output | ✅ |
 | [awesome-design-md](https://github.com/voltagent/awesome-design-md) | 7 brand token sets (colors, typography, spacing, breakpoints, shadows, motion, icons) plus DESIGN.md parser for design system extraction | ✅ |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 32 specialized agent personalities across 15 divisions: frontend, backend, devops, security, data, content, AI, testing, UI, product, engineering, design, management, performance | ✅ |
+| [learn-harness-engineering](https://github.com/walkinglabs/learn-harness-engineering) | Harness Engineering course — Five-Subsystem model, harness-creator skill with templates, eval framework, loop engineering patterns | ✅ |
+| [harnest](https://github.com/AlexGladkov/harnest) | AI coding assistant configurator — 92 stack detection, agent discovery, YAML declarative config, drift detection for 6 AI tools | ✅ |
+| [harness](https://github.com/revfactory/harness) | Meta-skill factory — generates multi-agent teams from domain descriptions with 6 architectural patterns + 3 execution modes | ✅ |
+| [opc-skills](https://github.com/ReScienceLab/opc-skills) | 10 indy hacker skills — SEO/GEO, image generation, domain search, Product Hunt API, Twitter, Reddit | ✅ |
+| [gstack](https://github.com/garrytan/gstack) | (Selected skills) spec writer v2, diagram generator, PDF generator, headless browser daemon | ✅ |
 
 ---
 
@@ -104,9 +111,9 @@ whoami/                     ← pnpm monorepo
 │   ├── rag-memory/        ← RAG memory
 │   ├── page-agent/        ← In-page GUI agent
 │   └── agent-reach/       ← 14-platform web access
-├── agents/                ← 52 agent .md files
-├── commands/              ← 13 command templates
-├── skills/                ← 55 domain skills
+├── agents/                ← 71 agent .md files
+├── commands/              ← 16 command templates
+├── skills/                ← 63 domain skills
 └── whoami.config.json     ← User configuration
 ```
 
@@ -153,7 +160,7 @@ Create `whoami.config.json` in your project or home directory:
 {
   "name": "WHOAMI",
   "version": "2.3.0",
-  "backend": "openfang",
+  "backend": "harness",
   "theme": "neon",
   "colors": {
     "primary": "#00FF88",
@@ -182,6 +189,11 @@ Create `whoami.config.json` in your project or home directory:
     "path": "~/.whoami/memory.db"
   },
   "autoLearn": true,
+  "harness": {
+    "subsystems": ["instructions", "state", "verification", "scope", "lifecycle"],
+    "evalsDir": ".claude/evals",
+    "harnessDir": ".harness"
+  },
   "openfang": {
     "endpoint": "http://127.0.0.1:4200",
     "channels": ["telegram", "slack", "discord", "email"],
@@ -291,6 +303,81 @@ View stats with `whoami stats`.
 
 ---
 
+## Harness Engineering
+
+WHOAMI v2.3 integrates **Harness Engineering** — the discipline of designing the environment, state management, verification, and control mechanisms that make AI agents reliable. Based on the **Five-Subsystem Model** from [walkinglabs/learn-harness-engineering](https://github.com/walkinglabs/learn-harness-engineering) (10.6k stars), WHOAMI provides a complete harness framework.
+
+### The Five-Subsystem Harness Model
+
+| Subsystem | Artifact | Purpose |
+|-----------|----------|---------|
+| **Instructions** | `AGENTS.md` / `CLAUDE.md` | Working rules, definition of done, project context |
+| **State** | `feature_list.json` / `progress.md` | Current feature, status, evidence, next step |
+| **Verification** | `init.sh` + test/lint commands | Machine-verifiable checks agent must run before declaring done |
+| **Scope** | Feature dependencies + done criteria | Prevents overreach and half-finished work |
+| **Lifecycle** | `session-handoff.md` | Makes the next session restartable with clean state |
+
+### Harness Pipeline
+
+```
+/harness create            Scaffold five-subsystem harness into any project
+/harness validate          Score project across 5 subsystems (0-100)
+/harness setup             Full setup: detect stack → configure → validate
+/team "domain description"  Generate multi-agent team from description
+/eval                      Eval-Driven Development: define → implement → evaluate → promote
+```
+
+### Eval-Driven Development (EDD)
+
+Every feature goes through the EDD cycle:
+
+1. **Define evals** (`/eval define`) — Capability evals + regression evals with pass@k targets
+2. **Deploy agents** — Specialized agents implement with evals as acceptance criteria
+3. **Run evals** (`/eval check`) — Code graders (deterministic), model graders (LLM-as-judge), human graders (review)
+4. **Report** (`/eval report`) — pass@1, pass@3, pass^k metrics with SHIP IT / NEEDS WORK / BLOCKED status
+
+### Cross-Project Auto-Learning
+
+When `autoLearn: true` (default), WHOAMI's memory system auto-aliments:
+
+1. **Skill Promotion**: If a pattern succeeds >= 3 times with >= 80% success rate in a project → automatically promoted to global memory
+2. **Cross-Project Pattern Sharing**: New projects automatically receive relevant skills from similar past projects
+3. **Harness Health Scoring**: Every project's harness gets scored and tracked in `project_harness` table
+4. **Global Memory**: SQLite at `~/.whoami/memory.db` tracks harness runs, skill promotions, and cross-project patterns
+
+### Built-in Graders
+
+| Grader | Type | Example |
+|--------|------|---------|
+| **Code Grader** | Deterministic | `grep -q "export function" src/api.ts && echo PASS` |
+| **Model Grader** | LLM-as-judge | Score 1-5 on structure, edge cases, error handling |
+| **Human Grader** | Manual review | Flag for LOW/MEDIUM/HIGH risk manual check |
+
+### Harness Commands
+
+| Command | Description |
+|---------|-------------|
+| `whoami harness create` | Scaffold harness (AGENTS.md + feature_list.json + init.sh + progress + handoff) |
+| `whoami harness validate` | Score repo across 5 subsystems + generate HTML report |
+| `whoami harness setup` | Full project setup: stack detect → configure → validate |
+| `whoami team "domain"` | Generate multi-agent team (6 patterns × 3 execution modes) |
+| `whoami eval define` | Define capability + regression evals with pass@k targets |
+| `whoami eval check` | Run current evals and report status |
+| `whoami eval report` | Generate full EDD report with metrics |
+
+### Architectural Patterns (from team-factory)
+
+| Pattern | When |
+|---------|------|
+| **Pipeline** | Sequential dependent tasks |
+| **Fan-out/Fan-in** | Parallel independent tasks |
+| **Expert Pool** | Context-dependent selective invocation |
+| **Producer-Reviewer** | Generation followed by quality review |
+| **Supervisor** | Central agent with dynamic distribution |
+| **Hierarchical** | Top-down recursive delegation |
+
+---
+
 ## Pipelines
 
 Pre-configured pipelines in `whoami.config.json`:
@@ -312,6 +399,17 @@ Pre-configured pipelines in `whoami.config.json`:
 | `social-media` | agent-reach-twitter, twitter, doc-updater |
 | `frontend` | frontend-developer, ui-designer |
 | `agency-build` | architect, frontend-developer, code-reviewer |
+| `harness-create` | harness-creator |
+| `harness-validate` | harness-creator, eval-harness |
+| `harness-setup` | stack-detector, harness-configurator, eval-harness |
+| `harness-team` | team-factory, eval-harness |
+| `eval` | eval-harness |
+| `browse` | browser-daemon |
+| `seo` | seo-specialist |
+| `design-images` | image-designer |
+| `product-research` | producthunt-agent |
+| `domain` | domain-hunter |
+| `spec-v2` | spec-writer-v2 |
 
 Define your own pipelines by adding entries to the `pipelines` object in the config.
 
@@ -319,7 +417,7 @@ Define your own pipelines by adding entries to the `pipelines` object in the con
 
 ## Agent Catalog
 
-52 agent definition files across 7 domains:
+52 agent definition files across 7 domains → now **71 agents across 10 domains**:
 
 | Domain | Agents |
 |--------|--------|
@@ -331,6 +429,9 @@ Define your own pipelines by adding entries to the `pipelines` object in the con
 | Agency | 32 specialized personalities across 15 divisions |
 | Agent Reach | web-scraper, twitter-agent, github-agent, youtube-agent, reddit-agent, rss-agent, agent-reach |
 | Zero | sandbox-agent, session-agent |
+| Harness Engineering | harness-creator, stack-detector, harness-configurator, team-factory, eval-harness |
+| SEO & Design | seo-specialist, domain-hunter, producthunt-agent, image-designer, spec-writer-v2 |
+| Browser | browser-daemon |
 
 ---
 

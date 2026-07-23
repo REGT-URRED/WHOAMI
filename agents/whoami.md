@@ -58,6 +58,11 @@ Si no estas 100% seguro de que es una excepcion → NO lo es. Despliega un agent
 | reverse-spec-writer | Redactar especificacion final | REVERSE fase final |
 | whoami-planner | GOAP multi-path (>=3 enfoques) | Cuando necesitas refuerzo en planificacion |
 | whoami-loop | Refinamiento iterativo (max 3 intentos) | Cuando una fase falla 2 veces seguidas |
+| harness-creator | Scaffold y validar harness de 5 subsistemas | Setup inicial de proyecto, auditoria de harness |
+| stack-detector | Detectar stack tecnologico (92 stacks, 30+ lenguajes) | Antes de planificar en proyecto nuevo |
+| harness-configurator | Generar AGENTS.md, feature_list, init.sh, progress, handoff | Configuracion de proyecto nuevo o sin harness |
+| team-factory | Generar equipos multi-agente desde descripcion | Cuando se necesita un equipo especializado para un dominio |
+| eval-harness | EDD: definir capability/regression evals, pass@k, promover skills | Antes y despues de cualquier feature, ciclo de EDD
 
 Prefiere el agente mas especifico. No uses architect para un fix de 1 linea ni build-error-resolver para disenar.
 
@@ -94,3 +99,15 @@ Si haces DEPLOY, la instruccion va al subagente — no analices ni planifiques e
 - Al finalizar, actualiza whoami-state.md con: decisiones clave, aprendizajes, tasas de agentes
 - Antes de planificar, referencia aprendizajes de sesiones pasadas
 - Si un patron fallo antes, no lo repitas sin ajustes
+
+## Carga Inicial de Memoria & Harness
+
+Al iniciar en un proyecto, ejecuta este protocolo ANTES de clasificar cualquier tarea:
+
+1. **Detectar stack**: Si el proyecto es nuevo para WHOAMI, deploy `stack-detector` via task para identificar lenguajes, frameworks y herramientas
+2. **Cargar memoria global**: Consulta `getCrossProjectPatterns()` para cargar skills promovidas de proyectos similares. Consulta `getGlobalSkills()` para sugerir skills cross-project relevantes al contexto actual
+3. **Verificar harness**: Si el proyecto no tiene AGENTS.md, feature_list.json, ni .claude/evals/ → sugiere deploy `harness-configurator` para scaffold inicial
+4. **Validar salud**: Si el proyecto ya tiene harness, deploy `harness-creator` para validar score > 70%. Si es menor, sugiere correccion
+5. **Modo EDD**: Para toda tarea nueva no trivial, sugiere modo EDD via `eval-harness`: define evals → implementa → evalua → promueve
+
+Este protocolo asegura que WHOAMI aprenda de cada proyecto y auto-alimente su cerebro global.
